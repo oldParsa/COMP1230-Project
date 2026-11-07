@@ -1,16 +1,28 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
+/*
+// Changed line 40 the header;
+// Changed escape method to htmlspecialchars method;
+// Changed  line 55 the footer;
+*/
+if (session_status() === PHP_SESSION_NONE) {session_start();}
+if (isset($_SESSION['user_id'])) {
+    header('Location: index.php', true, 303);
+    exit;
+}
 $username = '';
 $error = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = is_string($_POST['username'] ?? null) ? trim($_POST['username']) : '';
     $loginPassword = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
+
     try {
-        $pdo = require_once __DIR__ . '/db.php';
+        $pdo = require __DIR__ . '/db.php';
         $sql = 'SELECT id, username, display_name, password_hash FROM users WHERE username = :username LIMIT 1';
         $statement = $pdo->prepare($sql);
         $statement->execute(['username' => $username]);
         $user = $statement->fetch(PDO::FETCH_ASSOC);
+
         if ($user !== false && password_verify($loginPassword, (string) $user['password_hash'])) {
             session_regenerate_id(true);
             $_SESSION['user_id'] = (int) $user['id'];
@@ -24,9 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Unable to log in right now. Please try again.';
     }
 }
+
 $pageTitle = 'Log in — Study Group Finder';
-require_once __DIR__ . '/includes/sanitize.php';
-require __DIR__ . '/includes/header.php';
+require __DIR__ . '/header.php';
 ?>
 <main class="container">
     <section class="page-header">
@@ -38,20 +50,36 @@ require __DIR__ . '/includes/header.php';
             <h2>Test Accounts</h2>
             <p>You can use either of these accounts to test the website.</p>
             <table>
-                <thead><tr><th>Username</th><th>Password</th><th>Display Name</th></tr></thead>
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Display Name</th>
+                </tr>
+                </thead>
                 <tbody>
-                <tr><td>tester1</td><td>Study-1230</td><td>Tester One</td></tr>
-                <tr><td>tester2</td><td>Study-1230</td><td>Tester Two</td></tr>
+                <tr>
+                    <td>tester1</td>
+                    <td>Study-1230</td>
+                    <td>Tester One</td>
+                </tr>
+                <tr>
+                    <td>tester2</td>
+                    <td>Study-1230</td>
+                    <td>Tester Two</td>
+                </tr>
                 </tbody>
             </table>
         </div>
         <?php if ($error !== ''): ?>
-            <div class="error" role="alert"><p><?= escape($error) ?></p></div>
+            <div class="error" role="alert">
+                <p><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
+            </div>
         <?php endif; ?>
         <form action="login.php" method="post">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" value="<?= escape($username) ?>" required autocomplete="username">
+                <input type="text" id="username" name="username" value="<?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?>" required autocomplete="username">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
@@ -62,4 +90,4 @@ require __DIR__ . '/includes/header.php';
         <p>Don't have an account? <a href="register.php">Register</a></p>
     </section>
 </main>
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php require __DIR__ . '/footer.php'; ?>
