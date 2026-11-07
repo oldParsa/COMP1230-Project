@@ -1,5 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 $pdo = require __DIR__ . '/db.php';
+
+$groups = [];
 
 $stmt = $pdo->prepare("
     SELECT study_groups.id, study_groups.course_code, study_groups.title,
@@ -16,6 +21,12 @@ require __DIR__ . '/header.php';
 ?>
 
     <h2>Study Groups</h2>
+
+<?php if (isset($_SESSION['user_id'])): ?>
+    <p><a href="group-create.php">Create a group</a></p>
+<?php else: ?>
+    <p><a href="login.php">Log in</a> to create a group.</p>
+<?php endif; ?>
 
     <table border="1">
         <tr>
