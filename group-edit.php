@@ -17,7 +17,7 @@ if(isset($_SESSION['user_id'])) {
     $Description = trim($_POST["description"] ?? '');
     $Capacity = trim($_POST['capacity'] ?? 0);
     $Location = trim($_POST["location"] ?? '');
-    $Meets_At = $_POST["meets-at"] ?? '';
+    $Meets_At = $_POST["meets_at"] ?? '';
     $MAX_DESCRIPTION_CHARACTERS = 1000;
 
 
@@ -114,8 +114,8 @@ if(isset($_SESSION['user_id'])) {
     </div>
 
     <div>
-        <label for="meets-at">Meets At: </label>
-        <input type="datetime-local" id="meets-at" name="meets-at" value="<?= htmlspecialchars($Meets_At)?>">
+        <label for="meets_at">Meets At: </label>
+        <input type="datetime-local" id="meets_at" name="meets_at" value="<?= htmlspecialchars($Meets_At)?>">
         <span style="color: red"><?= $errors['Meets_At'] ?? '' ?></span>
 
     </div>
