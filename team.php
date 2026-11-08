@@ -14,7 +14,7 @@
     <h3>Member 2</h3>
     <p>Full name: Phung Chau Tran </p>
     <p>Student ID: 101566705 </p>
-    <p>Copy: <a href="">Website</a></p>
+    <p>Copy: <a href="https://f6566705.gblearn.com/comp1230/assignments/project/">Website</a></p>
     <p>AI declaration: <a href="">Phase 1</a></p>
 
     <h3>Member 3</h3>
