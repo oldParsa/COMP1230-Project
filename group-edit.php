@@ -15,7 +15,7 @@ if(isset($_SESSION['user_id'])) {
     $Course_Code = strtoupper(trim($_POST["course_code"] ?? ''));
     $Title = trim($_POST["title"] ?? '');
     $Description = trim($_POST["description"] ?? '');
-    $Capacity = filter_var(trim($_POST['capacity'] ?? 0), FILTER_VALIDATE_INT);
+    $Capacity = trim($_POST['capacity'] ?? 0);
     $Location = trim($_POST["location"] ?? '');
     $Meets_At = $_POST["meets-at"] ?? '';
     $MAX_DESCRIPTION_CHARACTERS = 1000;
