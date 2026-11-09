@@ -77,9 +77,9 @@ if(isset($_SESSION['user_id'])) {
 
         if(!isset($errors['Course_Code'])) {
             $letters = substr($Course_Code, 0, 4);
-            $digits = filter_var(substr($Course_Code, 4, 4), FILTER_VALIDATE_INT);
+            $digits = substr($Course_Code, 4, 4);
 
-            if(mb_strlen($Course_Code) !== 8 || !ctype_alpha($letters) || $digits === false) {
+            if(mb_strlen($Course_Code) !== 8 || !ctype_alpha($letters) || !ctype_digit($digits)) {
                 $errors['Course_Code'] = 'Course code must start with 4 letters followed by 4 digits.';
             }
         }
