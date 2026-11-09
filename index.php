@@ -15,9 +15,16 @@ $stmt->execute();
 $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 require __DIR__ . '/header.php';
+
+$delete_error = $_SESSION['error'] ?? '';
+unset($_SESSION['error']);
 ?>
 
     <h2>Study Groups</h2>
+
+<?php if($delete_error !== ''): ?>
+    <span class="error"><?= $delete_error ?></span>
+<?php endif; ?>
 
 <?php if (isset($_SESSION['user_id'])): ?>
     <p><a href="group-create.php">Create a group</a></p>

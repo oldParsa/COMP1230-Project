@@ -22,7 +22,9 @@ if(isset($_SESSION['user_id'])) {
             exit;
         } catch(PDOException $e) {
             error_log($e->getMessage());
-            $error['pdo'] = 'Could not perform the requested action. Please try again later.';
+            $_SESSION['error'] = 'Group could not be deleted. Please try again later.';
+            header('Location: index.php', true, 303);
+            exit;
         }
     } else {
         header('Location: index.php', true, 302);
