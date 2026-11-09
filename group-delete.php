@@ -21,6 +21,7 @@ if(isset($_SESSION['user_id'])) {
             header('Location: index.php', true, 303);
             exit;
         } catch(PDOException $e) {
+            error_log($e->getMessage());
             $error['pdo'] = 'Could not perform the requested action. Please try again later.';
         }
     } else {
