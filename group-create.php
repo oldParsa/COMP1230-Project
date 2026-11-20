@@ -94,14 +94,6 @@ if(isset($_SESSION['user_id'])) {
 require __DIR__ . '/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Create Study Group</title>
-</head>
-<body>
 <form action="group-create.php" method="post">
     <h2>Group Create Form</h2>
     <span class="error"><?= $errors['Message'] ?? '' ?></span>
@@ -149,6 +141,3 @@ require __DIR__ . '/header.php';
 </form>
 
 <?php require __DIR__ . '/footer.php'; ?>
-
-</body>
-</html>
