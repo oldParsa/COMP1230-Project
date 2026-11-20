@@ -6,6 +6,9 @@
 // Changed  line 118 the footer;
 */
 if (session_status() === PHP_SESSION_NONE) {session_start();}
+
+require __DIR__ . '/csrf.php';
+
 if (isset($_SESSION['user_id'])) {
     header('Location: index.php', true, 303);
     exit;
@@ -15,6 +18,7 @@ $displayNameInput = '';
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCsrf();
     $username = $_POST['username'] ?? '';
     $displayNameInput = $_POST['display_name'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -92,6 +96,7 @@ require __DIR__ . '/header.php';
         <?php endif; ?>
 
         <form action="register.php" method="post">
+            <?= csrfField() ?>
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" value="<?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?>" minlength="3" maxlength="20" required>

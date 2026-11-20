@@ -1,5 +1,6 @@
 <?php
 $pdo = require __DIR__ . '/db.php';
+require __DIR__ . '/csrf.php';
 
 $groups = [];
 
@@ -59,6 +60,7 @@ unset($_SESSION['error']);
                         <a href="group-edit.php?id=<?= (int)$group['id'] ?>">Edit</a>
 
                         <form method="post" action="group-delete.php">
+                            <?= csrfField()?>
                             <input type="hidden" name="id" value="<?= (int)$group['id'] ?>">
                             <button type="submit">Delete</button>
                         </form>

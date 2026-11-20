@@ -5,6 +5,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit('Method Not Allowed');
 }
 if (session_status() === PHP_SESSION_NONE) {session_start();}
+
+require __DIR__ . '/csrf.php';
+
+requireCsrf();
 $_SESSION = [];
 if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();

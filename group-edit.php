@@ -4,6 +4,7 @@ session_start();
 
 if(isset($_SESSION['user_id'])) {
     $pdo = require __DIR__ . '/db.php';
+    require __DIR__ . '/csrf.php';
 
     function notFound(): void {
         http_response_code(404);
@@ -36,9 +37,15 @@ if(isset($_SESSION['user_id'])) {
     $group_found = false;
 
     try {
-        $stmt = $pdo->prepare("SELECT course_code, title, description, meets_at, location, capacity FROM study_groups WHERE id = ?");
+        $stmt = $pdo->prepare("SELECT owner_id, course_code, title, description, meets_at, location, capacity FROM study_groups WHERE id = ?");
         $stmt->execute([$id]);
         $group_found = $stmt->fetch();
+        if($group_found === false) {
+            notFound();
+        }
+        if($group_found['owner_id'] !== $_SESSION['user_id']) {
+            accessDenied();
+        }
     } catch(PDOException $e) {
         error_log($e->getMessage());
         $errors['Message'] = "Please try again later.";
@@ -51,6 +58,7 @@ if(isset($_SESSION['user_id'])) {
     $MAX_DESCRIPTION_CHARACTERS = 1000;
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        requireCsrf();
         $Course_Code = strtoupper(trim($_POST["course_code"] ?? ''));
         $Title = trim($_POST["title"] ?? '');
         $Description = trim($_POST["description"] ?? '');
@@ -121,6 +129,12 @@ if(isset($_SESSION['user_id'])) {
 
         if(!$errors) {
             try{
+                $stmt = $pdo->prepare("SELECT owner_id FROM study_groups WHERE id = ?");
+                $stmt->execute([$id]);
+                $group = $stmt->fetch();
+                if($group['owner_id'] !== $_SESSION['user_id']) {
+                    accessDenied();
+                }
 
                 $meets_at = str_replace('T', ' ', $Meets_At ) . ':00';
 
@@ -152,46 +166,47 @@ require __DIR__ . '/header.php';
 ?>
 
 <form action="group-edit.php?id=<?= $id ?>" method="post">
+    <?= csrfField() ?>
     <input type="hidden" name="id" value="<?= (int) $id ?>">
     <h2>Edit Group Form</h2>
-    <span class="error"><?= $errors['Message'] ?? '' ?></span>
+    <span class="error"><?= htmlspecialchars($errors['Message'] ?? '') ?></span>
 
     <div>
         <label for="course_code">Course Code: </label>
         <input type="text" id="course_code" name="course_code" value="<?= htmlspecialchars($Course_Code)?>">
-        <span class="error"><?= $errors['Course_Code'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Course_Code'] ?? '') ?></span>
     </div>
 
     <div>
         <label for="title">Title: </label>
         <input type="text" id="title" name="title" value="<?= htmlspecialchars($Title)?>">
-        <span class="error"><?= $errors['Title'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Title'] ?? '') ?></span>
     </div>
 
     <div>
         <label for="description">Description: </label>
         <input type="text" id="description" name="description" value="<?= htmlspecialchars($Description)?>">
-        <span class="error"><?= $errors['Description'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Description'] ?? '') ?></span>
 
     </div>
 
     <div>
         <label for="meets_at">Meets At: </label>
         <input type="datetime-local" id="meets_at" name="meets_at" value="<?= htmlspecialchars($Meets_At)?>">
-        <span class="error"><?= $errors['Meets_At'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Meets_At'] ?? '') ?></span>
 
     </div>
 
     <div>
         <label for="location">Location: </label>
         <input type="text" id="location" name="location" value="<?= htmlspecialchars($Location)?>">
-        <span class="error"><?= $errors['Location'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Location'] ?? '') ?></span>
     </div>
 
     <div>
         <label for="capacity">Capacity: </label>
         <input type="text" id="capacity" name="capacity" value="<?= htmlspecialchars($Capacity)?>">
-        <span class="error"><?= $errors['Capacity'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Capacity'] ?? '') ?></span>
     </div>
 
     <br>

@@ -2,6 +2,8 @@
 
 session_start();
 
+require __DIR__ . '/csrf.php';
+
 if(isset($_SESSION['user_id'])) {
     $pdo = require __DIR__ . '/db.php';
 
@@ -16,6 +18,7 @@ if(isset($_SESSION['user_id'])) {
 
 
     if($_SERVER["REQUEST_METHOD"] === "POST") {
+        requireCsrf();
         if($Course_Code === '') $errors['Course_Code'] = 'Course code cannot be empty.';
         if($Title === '') $errors['Title'] = 'Title cannot be empty.';
         if($Description === '') $errors['Description'] = 'Description cannot be empty.';
@@ -73,6 +76,9 @@ if(isset($_SESSION['user_id'])) {
                 $pdo->prepare("INSERT INTO study_groups (course_code, owner_id ,title, description, meets_at, location, capacity) VALUES (?, ?, ?, ?, ?, ?, ?)")
                         ->execute([$Course_Code, $_SESSION['user_id'], $Title, $Description, $meets_at, $Location, $Capacity_Filtered]);
 
+                $pdo->prepare("INSERT INTO memberships (user_id, group_id) VALUES (?, ?)")
+                        ->execute([$_SESSION['user_id'], $pdo->lastInsertId()]);
+
                 header('Location: index.php', true, 303);
                 exit;
 
@@ -95,6 +101,7 @@ require __DIR__ . '/header.php';
 ?>
 
 <form action="group-create.php" method="post">
+    <?= csrfField()?>
     <h2>Group Create Form</h2>
     <span class="error"><?= $errors['Message'] ?? '' ?></span>
 

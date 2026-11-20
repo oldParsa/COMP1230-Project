@@ -2,10 +2,12 @@
 
 session_start();
 
-if(isset($_SESSION['user_id'])) {
+require __DIR__ . '/csrf.php';
 
+if(isset($_SESSION['user_id'])) {
     $pdo = require __DIR__ . '/db.php';
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        requireCsrf();
         $error = [];
         $Id = $_POST['id'] ?? '';
         $Filtered_Id = filter_var($Id, FILTER_VALIDATE_INT);
@@ -15,6 +17,13 @@ if(isset($_SESSION['user_id'])) {
         }
 
         try {
+            $stmt = $pdo->prepare("SELECT owner_id FROM study_groups WHERE id = ?");
+            $stmt->execute([$Filtered_Id]);
+            $group = $stmt->fetch();
+            if($group['owner_id'] !== $_SESSION['user_id']) {
+                accessDenied();
+            }
+
             $pdo->prepare("DELETE FROM study_groups WHERE id = ?")
                 ->execute([$Filtered_Id]);
 

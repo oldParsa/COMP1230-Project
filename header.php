@@ -4,6 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+require __DIR__ . '/csrf.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -34,6 +36,7 @@ if (session_status() === PHP_SESSION_NONE) {
             </span>
 
             <form method="post" action="logout.php">
+                <?= csrfField() ?>
                 <button type="submit">Log out</button>
             </form>
 

@@ -9,10 +9,14 @@ if (isset($_SESSION['user_id'])) {
     header('Location: index.php', true, 303);
     exit;
 }
+
+require __DIR__ . '/csrf.php';
+
 $username = '';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCsrf();
     $username = is_string($_POST['username'] ?? null) ? trim($_POST['username']) : '';
     $loginPassword = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
 
@@ -77,6 +81,7 @@ require __DIR__ . '/header.php';
             </div>
         <?php endif; ?>
         <form action="login.php" method="post">
+            <?= csrfField() ?>
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" value="<?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?>" required autocomplete="username">
