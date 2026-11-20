@@ -1,6 +1,6 @@
 <?php
 $pdo = require __DIR__ . '/db.php';
-require __DIR__ . '/csrf.php';
+require_once __DIR__ . '/csrf.php';
 
 $groups = [];
 

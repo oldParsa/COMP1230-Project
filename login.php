@@ -10,7 +10,7 @@ if (isset($_SESSION['user_id'])) {
     exit;
 }
 
-require __DIR__ . '/csrf.php';
+require_once __DIR__ . '/csrf.php';
 
 $username = '';
 $error = '';

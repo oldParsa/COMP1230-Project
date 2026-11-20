@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 if (session_status() === PHP_SESSION_NONE) {session_start();}
 
-require __DIR__ . '/csrf.php';
+require_once __DIR__ . '/csrf.php';
 
 requireCsrf();
 $_SESSION = [];

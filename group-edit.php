@@ -4,7 +4,7 @@ session_start();
 
 if(isset($_SESSION['user_id'])) {
     $pdo = require __DIR__ . '/db.php';
-    require __DIR__ . '/csrf.php';
+    require_once __DIR__ . '/csrf.php';
 
     function notFound(): void {
         http_response_code(404);

@@ -2,7 +2,7 @@
 
 session_start();
 
-require __DIR__ . '/csrf.php';
+require_once __DIR__ . '/csrf.php';
 
 if(isset($_SESSION['user_id'])) {
     $pdo = require __DIR__ . '/db.php';
