@@ -103,44 +103,44 @@ require __DIR__ . '/header.php';
 <form action="group-create.php" method="post">
     <?= csrfField()?>
     <h2>Group Create Form</h2>
-    <span class="error"><?= $errors['Message'] ?? '' ?></span>
+    <span class="error"><?= htmlspecialchars($errors['Message'] ?? '') ?></span>
 
     <div>
         <label for="course_code">Course Code: </label>
         <input type="text" id="course_code" name="course_code" value="<?= htmlspecialchars($Course_Code)?>">
-        <span class="error"><?= $errors['Course_Code'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Course_Code'] ?? '') ?></span>
     </div>
 
     <div>
         <label for="title">Title: </label>
         <input type="text" id="title" name="title" value="<?= htmlspecialchars($Title)?>">
-        <span class="error"><?= $errors['Title'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Title'] ?? '') ?></span>
     </div>
 
     <div>
         <label for="description">Description: </label>
         <input type="text" id="description" name="description" value="<?= htmlspecialchars($Description)?>">
-        <span class="error"><?= $errors['Description'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Description'] ?? '') ?></span>
 
     </div>
 
     <div>
         <label for="meets_at">Meets At: </label>
         <input type="datetime-local" id="meets_at" name="meets_at" value="<?= htmlspecialchars($Meets_At)?>">
-        <span class="error"><?= $errors['Meets_At'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Meets_At'] ?? '') ?></span>
 
     </div>
 
     <div>
         <label for="location">Location: </label>
         <input type="text" id="location" name="location" value="<?= htmlspecialchars($Location)?>">
-        <span class="error"><?= $errors['Location'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Location'] ?? '') ?></span>
     </div>
 
     <div>
         <label for="capacity">Capacity: </label>
         <input type="text" id="capacity" name="capacity" value="<?= htmlspecialchars($Capacity)?>">
-        <span class="error"><?= $errors['Capacity'] ?? '' ?></span>
+        <span class="error"><?= htmlspecialchars($errors['Capacity'] ?? '') ?></span>
     </div>
 
     <br>
