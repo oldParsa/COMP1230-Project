@@ -4,6 +4,19 @@ session_start();
 
 require_once __DIR__ . '/csrf.php';
 
+function accessDenied(): void {
+    http_response_code(403);
+    ?>
+    <?php require "header.php"; ?>
+    <h1>403</h1>
+    <h2>You can only change your own study groups.</h2>
+    <a href="index.php">Return to the home page</a>
+    <?php require "footer.php"; ?>
+    <?php
+
+    exit;
+}
+
 if(isset($_SESSION['user_id'])) {
     $pdo = require __DIR__ . '/db.php';
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
