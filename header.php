@@ -35,6 +35,10 @@ require_once __DIR__ . '/csrf.php';
                 <?= htmlspecialchars($_SESSION['display_name']) ?>
             </span>
 
+            <span>
+                <a href="my-groups.php">My groups</a>
+            </span>
+
             <form method="post" action="logout.php">
                 <?= csrfField() ?>
                 <button type="submit">Log out</button>

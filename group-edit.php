@@ -9,19 +9,11 @@ if(isset($_SESSION['user_id'])) {
     function notFound(): void {
         http_response_code(404);
         ?>
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>404</title>
-        </head>
-        <body>
+        <?php require "header.php"; ?>
         <h1>404</h1>
         <h2>Study group not found </h2>
         <a href="index.php">Return to the home page</a>
-        </body>
-        </html>
+        <?php require "footer.php"; ?>
         <?php
 
         exit;

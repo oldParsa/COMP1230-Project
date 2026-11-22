@@ -77,36 +77,58 @@ require __DIR__ . '/header.php';
     <p class="error"><?= htmlspecialchars($membershipError, ENT_QUOTES, 'UTF-8') ?></p>
 <?php endif; ?>
 
+<p><a href="index.php"> Back to study groups </a></p>
+
 <h2><?= htmlspecialchars($group['title'], ENT_QUOTES, 'UTF-8') ?></h2>
+<p><strong><?= htmlspecialchars($group['course_code'], ENT_QUOTES, 'UTF-8') ?></strong></p>
+<p><?= nl2br(htmlspecialchars($group['description'], ENT_QUOTES, 'UTF-8')) ?></p>
 
-<dl>
-    <dt>Course</dt>
-    <dd><?= htmlspecialchars($group['course_code'], ENT_QUOTES, 'UTF-8') ?></dd>
+<table border="1" cellpadding="6">
+    <tr>
+        <th align="left">When</th>
+        <td><?= htmlspecialchars($group['meets_at'], ENT_QUOTES, 'UTF-8') ?></td>
+    </tr>
+    <tr>
+        <th align="left">Where</th>
+        <td><?= htmlspecialchars($group['location'], ENT_QUOTES, 'UTF-8') ?></td>
+    </tr>
+    <tr>
+        <th align="left">Created by</th>
+        <td><?= htmlspecialchars($group['owner_name'], ENT_QUOTES, 'UTF-8') ?></td>
+    </tr>
+    <tr>
+        <th align="left">Capacity</th>
+        <td><?= (int) $group['capacity'] ?></td>
+    </tr>
+    <tr>
+        <th align="left">Places left</th>
+        <td><?= htmlspecialchars($placesLeft) ?></td>
+    </tr>
+</table>
 
-    <dt>Description</dt>
-    <dd><?= nl2br(htmlspecialchars($group['description'], ENT_QUOTES, 'UTF-8')) ?></dd>
+<?php if ($me === 0): ?>
+    <p><a href="login.php">Log in</a> to join this group.</p>
 
-    <dt>When</dt>
-    <dd><?= htmlspecialchars($group['meets_at'], ENT_QUOTES, 'UTF-8') ?></dd>
+<?php elseif ($isOwner): ?>
+    <p>You own this group. <a href="group-edit.php?id=<?= (int) $group['id'] ?>">Edit group</a></p>
 
-    <dt>Where</dt>
-    <dd><?= htmlspecialchars($group['location'], ENT_QUOTES, 'UTF-8') ?></dd>
+<?php elseif ($isMember): ?>
+    <form method="post" action="group-leave.php">
+        <?= csrfField() ?>
+        <input type="hidden" name="id" value="<?= (int) $group['id'] ?>">
+        <button type="submit">Leave Group</button>
+    </form>
 
-    <dt>Created by</dt>
-    <dd><?= htmlspecialchars($group['owner_name'], ENT_QUOTES, 'UTF-8') ?></dd>
+<?php else: ?>
+    <form method="post" action="group-join.php">
+        <?= csrfField() ?>
+        <input type="hidden" name="id" value="<?= (int) $group['id'] ?>">
+        <button type="submit">Join Group</button>
+    </form>
+<?php endif; ?>
 
-    <dt>Capacity</dt>
-    <dd><?= (int) $group['capacity'] ?></dd>
-
-    <dt>Places left</dt>
-    <dd><?= $placesLeft ?></dd>
-</dl>
-
-<h3>Members</h3>
+<h3>Members (<?= count($members) ?>)</h3>
 <ul>
-    <?php if (!$ownerInMemberships): ?>
-        <li><?= htmlspecialchars($group['owner_name'], ENT_QUOTES, 'UTF-8') ?> (Owner)</li>
-    <?php endif; ?>
     <?php foreach ($members as $member): ?>
         <li>
             <?= htmlspecialchars($member['display_name'], ENT_QUOTES, 'UTF-8') ?>
@@ -114,28 +136,5 @@ require __DIR__ . '/header.php';
         </li>
     <?php endforeach; ?>
 </ul>
-
-<?php if ($me === 0): ?>
-    <p><a href="login.php">Log in</a> to join this group.</p>
-<?php elseif ($isOwner): ?>
-    <p>You own this group.</p>
-    <p><a href="group-edit.php?id=<?= (int) $group['id'] ?>">Edit group</a></p>
-<?php elseif ($isMember): ?>
-    <form method="post" action="group-leave.php">
-        <?= csrfField() ?>
-        <input type="hidden" name="id" value="<?= (int) $group['id'] ?>">
-        <button type="submit">Leave Group</button>
-    </form>
-<?php elseif ($placesLeft > 0): ?>
-    <form method="post" action="group-join.php">
-        <?= csrfField() ?>
-        <input type="hidden" name="id" value="<?= (int) $group['id'] ?>">
-        <button type="submit">Join Group</button>
-    </form>
-<?php else: ?>
-    <p class="error">This study group is full.</p>
-<?php endif; ?>
-
-<p><a href="index.php">Back to study groups</a></p>
 
 <?php require __DIR__ . '/footer.php'; ?>

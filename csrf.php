@@ -4,19 +4,11 @@
 function accessDenied(): void {
     http_response_code(403);
     ?>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>403</title>
-    </head>
-    <body>
+    <?php require "header.php"; ?>
     <h1>403</h1>
     <h2>You can only change your own study groups.</h2>
     <a href="index.php">Return to the home page</a>
-    </body>
-    </html>
+    <?php require "footer.php"; ?>
     <?php
 
     exit;
