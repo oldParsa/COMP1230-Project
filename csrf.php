@@ -1,5 +1,6 @@
 ﻿<?php
 
+// CSRF Token for security
 function accessDenied(): void {
     http_response_code(403);
     ?>
