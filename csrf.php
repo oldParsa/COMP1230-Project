@@ -1,6 +1,20 @@
 ﻿<?php
 
 // CSRF Token for security
+
+function accessDenied(): void {
+    http_response_code(403);
+    ?>
+    <?php require "header.php"; ?>
+    <h1>403</h1>
+    <h2>You can only change your own study groups.</h2>
+    <a href="index.php">Return to the home page</a>
+    <?php require "footer.php"; ?>
+    <?php
+
+    exit;
+}
+
 function csrfToken(): string {
     if (!isset($_SESSION['csrf']) || !is_string($_SESSION['csrf'])) {
         $_SESSION['csrf'] = bin2hex(random_bytes(32));

@@ -19,19 +19,6 @@ if(isset($_SESSION['user_id'])) {
         exit;
     }
 
-    function accessDenied(): void {
-        http_response_code(403);
-        ?>
-        <?php require "header.php"; ?>
-        <h1>403</h1>
-        <h2>You can only change your own study groups.</h2>
-        <a href="index.php">Return to the home page</a>
-        <?php require "footer.php"; ?>
-        <?php
-
-        exit;
-    }
-
     $id = filter_var($_GET['id'] ?? $_POST['id'] ?? '', FILTER_VALIDATE_INT);
 
     if($id === false) {
@@ -48,7 +35,7 @@ if(isset($_SESSION['user_id'])) {
         if($group_found === false) {
             notFound();
         }
-        if($group_found['owner_id'] !== $_SESSION['user_id']) {
+        if((int) $group_found['owner_id'] !== $_SESSION['user_id']) {
             accessDenied();
         }
     } catch(PDOException $e) {
@@ -137,7 +124,7 @@ if(isset($_SESSION['user_id'])) {
                 $stmt = $pdo->prepare("SELECT owner_id FROM study_groups WHERE id = ?");
                 $stmt->execute([$id]);
                 $group = $stmt->fetch();
-                if($group['owner_id'] !== $_SESSION['user_id']) {
+                if((int) $group['owner_id'] !== $_SESSION['user_id']) {
                     accessDenied();
                 }
 
