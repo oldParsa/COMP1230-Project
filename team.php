@@ -10,8 +10,10 @@
         <th>Member</th>
         <th>Student ID</th>
         <th>Copy</th>
-        <th>AI declarations</th>
+        <th>AI declarations 1</th>
+        <th>AI declarations 2</th>
         <th>Video</th>
+
     </tr>
 
     <tr>
@@ -19,6 +21,7 @@
         <td>101561837</td>
         <td><a href="https://f6561837.gblearn.com/comp1230/assignments/project/">Website</a></td>
         <td><a href="https://f6561837.gblearn.com/comp1230/assignments/project/aud-phase1.pdf">Phase 1</a></td>
+        <td><a href="https://f6561837.gblearn.com/comp1230/assignments/project/aud-phase2.pdf">Phase 2</a></td>
         <td>Coming in Phase 3</td>
     </tr>
 
@@ -27,6 +30,7 @@
         <td>101566705</td>
         <td><a href="https://f6566705.gblearn.com/comp1230/assignments/project/">Website</a></td>
         <td><a href="https://f6566705.gblearn.com/comp1230/assignments/project/aud-phase1.pdf">Phase 1</a></td>
+        <td><a href="https://f6566705.gblearn.com/comp1230/assignments/project/aud-phase2.pdf">Phase 2</a></td>
         <td>Coming in Phase 3</td>
     </tr>
 
@@ -35,6 +39,7 @@
         <td>101607619</td>
         <td><a href="https://f6607619.gblearn.com/comp1230/assignments/project/">Website</a></td>
         <td><a href="https://f6607619.gblearn.com/comp1230/assignments/project/aud-phase1.pdf">Phase 1</a></td>
+        <td><a href="https://f6607619.gblearn.com/comp1230/assignments/project/aud-phase2.pdf">Phase 2</a></td>
         <td>Coming in Phase 3</td>
     </tr>
 </table>
