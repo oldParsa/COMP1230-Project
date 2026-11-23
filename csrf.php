@@ -2,18 +2,18 @@
 
 // CSRF Token for security
 function csrfToken(): string {
-    if (!isset($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    if (!isset($_SESSION['csrf']) || !is_string($_SESSION['csrf'])) {
+        $_SESSION['csrf'] = bin2hex(random_bytes(32));
     }
-    return $_SESSION['csrf_token'];
+    return $_SESSION['csrf'];
 }
 
 function csrfField(): string {
-    return '<input type="hidden" name="csrf_token" value="' . htmlspecialchars(csrfToken()) . '">';
+    return '<input type="hidden" name="csrf" value="' . htmlspecialchars(csrfToken()) . '">';
 }
 
 function requireCsrf(): void {
-    $csrf = $_POST['csrf_token'] ?? null;
+    $csrf = $_POST['csrf'] ?? null;
     if (!is_string($csrf) || !hash_equals(csrfToken(), $csrf)) {
         http_response_code(403);
         exit("This form was not received from this website. Please try again later.");
